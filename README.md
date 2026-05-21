@@ -1,0 +1,1 @@
+# Projeto-CG-2026.1-Cubo-Rubik
