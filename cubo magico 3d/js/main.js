@@ -1,36 +1,50 @@
-let scene, câmera, renderer, controls, cubo;
- 
-function init() {
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x222222);
- 
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
-    camera.position.set(5,5,5);
- 
-    renderer = new THREE.WebGLRenderer({antialias:true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById("container").appendChild(renderer.domElement);
- 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
- 
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5,5,5);
-    scene.add(light);
- 
-    cubo = new Cubo(scene);
- 
-    document.getElementById("shuffleBtn").addEventListener("click", () => {
-        cubo.rotacionarFaceU(); // teste: gira face superior
-    });
- 
-    animate();
-}
- 
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x111111);
+
+const camera = new THREE.PerspectiveCamera(
+  60,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+camera.position.set(5, 5, 7);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+const light = new THREE.AmbientLight(0xffffff, 1);
+scene.add(light);
+
+const cubo = new Cubo(scene);
+
+document.getElementById("btnU").addEventListener("click", () => {
+  cubo.rotacionarFace("U");
+});
+
+document.getElementById("btnF").addEventListener("click", () => {
+  cubo.rotacionarFace("F");
+});
+
+document.getElementById("btnShuffle").addEventListener("click", () => {
+  cubo.embaralhar();
+});
+
 function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+  controls.update();
+  cubo.update();
+  renderer.render(scene, camera);
 }
- 
-init();
+
+animate();
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
