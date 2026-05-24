@@ -1,69 +1,137 @@
 class Cubo {
-    constructor(scene) {
-        this.scene
-        this.cubo = [];
-        this.grupos = {};
-        this.criarcubos();
-    }
-    criarcubos(){
-        const cores = {
-            D: 0xffff00, // amarela
-            U: 0xffffff, // branca
-            R: 0xff0000, // vermelha
-            L: 0xffa500, // laranja
-            B: 0x0000ff, // azul
-            F: 0x00ff00  // verde
-        };
-        const tamanho = 1;
-        const offset = tamanho +0.05
+  constructor(scene) {
+    this.scene = scene;
+    this.cubinhos = [];
+    this.animando = false;
+    this.movimentos = 0;
 
-        for (let x = -1; x < 1; x++) {
-             for (let y = -1; y <= 1; y++) {
-                for (let z = -1; z <= 1; z++) {            
-                    const geometria = new TaskPriorityChangeEvent.BoxGeomatry(tamanho,tamanho,tamanho,);
-                     const materials = [
-                        new THREE.MeshBasicMaterial({ color: (x === 1) ? cores.R : 0x000000 }),
-                        new THREE.MeshBasicMaterial({ color: (x === -1) ? cores.L : 0x000000 }),
-                        new THREE.MeshBasicMaterial({ color: (y === 1) ? cores.U : 0x000000 }),
-                        new THREE.MeshBasicMaterial({ color: (y === -1) ? cores.D : 0x000000 }),
-                        new THREE.MeshBasicMaterial({ color: (z === 1) ? cores.F : 0x000000 }),
-                        new THREE.MeshBasicMaterial({ color: (z === -1) ? cores.B : 0x000000 }),
-                    ];
-                    const cubo = new THREE.MeshBasicMaterial(geometria,material);
-                    cubo.position.set(x*offset,y*offset,z*offset);
-                    this.scene.add (cubo);
-                    this.cubo.push(cubo);
-                 }
-            }
+    this.grupoRotacao = new THREE.Group();
+    this.scene.add(this.grupoRotacao);
+
+    this.faceAtual = null;
+    this.anguloAtual = 0;
+    this.anguloFinal = Math.PI / 2;
+    this.velocidade = 0.08;
+
+    this.criarCubo();
+  }
+
+  criarCubo() {
+    const tamanho = 0.95;
+    const espaco = 1.05;
+
+    for (let x = -1; x <= 1; x++) {
+      for (let y = -1; y <= 1; y++) {
+        for (let z = -1; z <= 1; z++) {
+          const geometry = new THREE.BoxGeometry(tamanho, tamanho, tamanho);
+
+          const materiais = [
+            new THREE.MeshBasicMaterial({ color: x === 1 ? 0xff0000 : 0x222222 }), // direita
+            new THREE.MeshBasicMaterial({ color: x === -1 ? 0xff8800 : 0x222222 }), // esquerda
+            new THREE.MeshBasicMaterial({ color: y === 1 ? 0xffffff : 0x222222 }), // cima
+            new THREE.MeshBasicMaterial({ color: y === -1 ? 0xffff00 : 0x222222 }), // baixo
+            new THREE.MeshBasicMaterial({ color: z === 1 ? 0x00aa00 : 0x222222 }), // frente
+            new THREE.MeshBasicMaterial({ color: z === -1 ? 0x0000ff : 0x222222 })  // trás
+          ];
+
+          const cubinho = new THREE.Mesh(geometry, materiais);
+          cubinho.position.set(x * espaco, y * espaco, z * espaco);
+
+          cubinho.userData.posicao = { x, y, z };
+
+          this.scene.add(cubinho);
+          this.cubinhos.push(cubinho);
         }
+      }
     }
-    rotacionarFaceU(){
-        const cubosFaceU = this.cubo.filter (c => position.y > 0.9);
-        const grupo = new THREE.Group();
-        cubosFaceU.forEach (c => {
-            THREE.SceneUtils.detach (c,this.scene,grupo)
-            grupo.add (c);
-        });
-        this.scene.add(grupo);
+  }
 
-        // animação 
-
-        const angulo = Math.PI/2
-        let passo = 0;
-        const animacao = () => {
-            if (passo < angulo){
-                grupo.rotacao.y += 0.05;
-                passo += 0.05;
-                requestAnimationFrame(animacao);
-            } else{
-                 // Solta cubos de volta na cena
-                 cubosFaceU.forEach(c => {
-                    THREE.SceneUtils.detach(c, grupo, this.scene);
-                    this.scene.add(c);
-                });
-                this.scene.remove(grupo);
-            }
-        }
-        animacao();
+  obterCubinhosDaFace(face) {
+    if (face === "U") {
+      return this.cubinhos.filter(c => Math.round(c.position.y) === 1);
     }
+
+    if (face === "F") {
+      return this.cubinhos.filter(c => Math.round(c.position.z) === 1);
+    }
+
+    return [];
+  }
+
+  rotacionarFace(face) {
+    if (this.animando) return;
+
+    this.faceAtual = face;
+    this.anguloAtual = 0;
+    this.animando = true;
+
+    const cubinhosFace = this.obterCubinhosDaFace(face);
+
+    this.grupoRotacao.rotation.set(0, 0, 0);
+
+    cubinhosFace.forEach(cubinho => {
+      this.scene.remove(cubinho);
+      this.grupoRotacao.add(cubinho);
+    });
+  }
+
+  update() {
+    if (!this.animando) return;
+
+    const incremento = Math.min(this.velocidade, this.anguloFinal - this.anguloAtual);
+    this.anguloAtual += incremento;
+
+    if (this.faceAtual === "U") {
+      this.grupoRotacao.rotation.y += incremento;
+    }
+
+    if (this.faceAtual === "F") {
+      this.grupoRotacao.rotation.z -= incremento;
+    }
+
+    if (this.anguloAtual >= this.anguloFinal) {
+      this.finalizarRotacao();
+    }
+  }
+
+  finalizarRotacao() {
+    this.grupoRotacao.updateMatrixWorld();
+
+    while (this.grupoRotacao.children.length > 0) {
+      const cubinho = this.grupoRotacao.children[0];
+
+      cubinho.applyMatrix4(this.grupoRotacao.matrixWorld);
+
+      this.grupoRotacao.remove(cubinho);
+      this.scene.add(cubinho);
+
+      cubinho.position.x = Math.round(cubinho.position.x * 100) / 100;
+      cubinho.position.y = Math.round(cubinho.position.y * 100) / 100;
+      cubinho.position.z = Math.round(cubinho.position.z * 100) / 100;
+    }
+
+    this.grupoRotacao.rotation.set(0, 0, 0);
+
+    this.animando = false;
+    this.movimentos++;
+
+    document.getElementById("moves").textContent = this.movimentos;
+  }
+
+  embaralhar() {
+    const movimentos = ["U", "F"];
+    let i = 0;
+
+    const intervalo = setInterval(() => {
+      if (!this.animando) {
+        const face = movimentos[Math.floor(Math.random() * movimentos.length)];
+        this.rotacionarFace(face);
+        i++;
+      }
+
+      if (i >= 10) {
+        clearInterval(intervalo);
+      }
+    }, 250);
+  }
 }

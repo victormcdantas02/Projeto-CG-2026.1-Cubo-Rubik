@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html lang ="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <title>Cubo Magico 3D Rubik</title>
-        <link rel="stylesheet" href="css/styles.css">
-    </head>
-    <body>
-         <div id="container"></div>
-          <button id="shuffleBtn">Embaralhar</button>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cubo Mágico 3D</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="menu">
+    <h1>Cubo Mágico 3D</h1>
+    <button id="btnU">Girar Face Superior</button>
+    <button id="btnF">Girar Face Frontal</button>
+    <button id="btnShuffle">Embaralhar</button>
+    <p>Movimentos: <span id="moves">0</span></p>
+  </div>
 
-          <script> src = "libs/three.min.js"</script>
-          <script src="libs/OrbitControls.js"></script>
-          <script src="js/cubo.js"></script>
-          <script src="js/main.js"></script>
-    </body>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script src="js/cubo.js"></script>
+  <script src="js/main.js"></script>
+</body>
 </html>
