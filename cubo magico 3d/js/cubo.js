@@ -11,7 +11,7 @@ class Cubo {
     this.faceAtual = null;
     this.anguloAtual = 0;
     this.anguloFinal = Math.PI / 2;
-    this.velocidade = 0.08;
+    this.velocidade = 0.05;
 
     this.criarCubo();
   }
@@ -54,7 +54,9 @@ class Cubo {
     if (face === "F") {
       return this.cubinhos.filter(c => Math.round(c.position.z) === 1);
     }
-
+    if (face === "D") {
+      return this.cubinhos.filter(c => Math.round(c.position.y) === -1);
+}
     return [];
   }
 
@@ -88,6 +90,9 @@ class Cubo {
     if (this.faceAtual === "F") {
       this.grupoRotacao.rotation.z -= incremento;
     }
+    if (this.faceAtual === "D") {
+      this.grupoRotacao.rotation.y -= incremento;
+}
 
     if (this.anguloAtual >= this.anguloFinal) {
       this.finalizarRotacao();
@@ -134,4 +139,27 @@ class Cubo {
       }
     }, 250);
   }
+  reiniciar() {
+  while (this.grupoRotacao.children.length > 0) {
+    const cubinho = this.grupoRotacao.children[0];
+    this.grupoRotacao.remove(cubinho);
+    this.scene.add(cubinho);
+  }
+
+  this.cubinhos.forEach(cubinho => {
+    this.scene.remove(cubinho);
+  });
+
+  this.cubinhos = [];
+  this.animando = false;
+  this.faceAtual = null;
+  this.anguloAtual = 0;
+  this.movimentos = 0;
+
+  this.grupoRotacao.rotation.set(0, 0, 0);
+
+  document.getElementById("moves").textContent = this.movimentos;
+
+  this.criarCubo();
+}
 }
