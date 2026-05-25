@@ -48,3 +48,18 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+window.addEventListener("keydown", function (event) {
+  console.log("Tecla apertada:", event.key);
+
+  if (event.key.toLowerCase() === "u") {
+    cubo.rotacionarFace("U");
+  }
+
+  if (event.key.toLowerCase() === "f") {
+    cubo.rotacionarFace("F");
+  }
+
+  if (event.key.toLowerCase() === "e") {
+    cubo.embaralhar();
+  }
+});
