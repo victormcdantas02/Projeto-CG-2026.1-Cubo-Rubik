@@ -12,6 +12,8 @@ class Cubo {
     this.anguloAtual = 0;
     this.anguloFinal = Math.PI / 2;
     this.velocidade = 0.05;
+    this.vitorias = 0;
+    this.contado_Vitorias = true;
 
     this.criarCubo();
   }
@@ -155,11 +157,39 @@ class Cubo {
   this.faceAtual = null;
   this.anguloAtual = 0;
   this.movimentos = 0;
-
+  this.jaContouVitoria = true;
   this.grupoRotacao.rotation.set(0, 0, 0);
 
   document.getElementById("moves").textContent = this.movimentos;
 
   this.criarCubo();
+''}
+verificarVitoria() {
+  const resolvido = this.cubinhos.every(cubinho => {
+    const posInicial = cubinho.userData.posicaoInicial;
+
+    return (
+      Math.round(cubinho.position.x / 1.05) === posInicial.x &&
+      Math.round(cubinho.position.y / 1.05) === posInicial.y &&
+      Math.round(cubinho.position.z / 1.05) === posInicial.z
+    );
+  });
+
+  const status = document.getElementById("status");
+
+  if (resolvido) {
+    status.textContent = "Status: Cubo resolvido!";
+    status.style.color = "#00ff88";
+
+    if (!this.jaContouVitoria && this.movimentos > 0) {
+      this.vitorias++;
+      document.getElementById("wins").textContent = this.vitorias;
+      this.jaContouVitoria = true;
+    }
+  } else {
+    status.textContent = "Status: Embaralhado";
+    status.style.color = "#ffcc00";
+    this.jaContouVitoria = false;
+  }
 }
 }
