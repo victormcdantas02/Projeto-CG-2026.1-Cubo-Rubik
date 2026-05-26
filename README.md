@@ -1,39 +1,57 @@
-# Projeto-CG-2026.1-Cubo-Rubik
+# Cubo Mágico 3D – Computação Gráfica
 
-##  Descrição
+Projeto desenvolvido em Three.js para a disciplina de Computação Gráfica.
 
-Este projeto implementa uma simulação interativa de um cubo mágico em um ambiente 3D utilizando **Three.js**. O projeto oferece uma experiência visual imersiva com rotações suaves das faces, câmera orbitável com controle de mouse e recursos extras que melhoram a jogabilidade.
+## Objetivo
 
-##  Requisitos Mínimos Implementados
+Criar uma simulação interativa de um Cubo Mágico 3D com animações suaves e câmera orbital.
 
-##  Recursos Extras
+## Funcionalidades
 
-##  Como Executar
+- Cubo 3x3x3 com 27 cubinhos
+- Rotação da face superior (U)
+- Rotação da face frontal (F)
+- Animação suave
+- OrbitControls com mouse
+- Botão de embaralhar
+- Contador de movimentos
 
-##  Tecnologias Utilizadas
+## Tecnologias
 
-##  Estrutura do Projeto
+- HTML5
+- CSS3
+- JavaScript
+- Three.js
 
-##  Dica de Implementação
+## Como executar
 
-##  Controles
+1. Abra o terminal na pasta do projeto
+2. Execute:
 
-##  Entregáveis
+```bash
+python -m http.server 8000
+```
 
-##  Integrantes do Grupo
+3. Abra:
+
+```text
+http://localhost:8000
+```
+
+## Estrutura
+
+```text
+cubo magico 3d/
+│
+├── index.html
+├── css/
+├── js/
+└── README.md
+```
+
+## Integrantes
+
 Pedro Ayres
 Victor Dantas
 João Carlos Pires
 Roberto Campos
-
-##  Relatório
-
-##  Referências
-
-## Prompt  Utilizado 
--
--
--
-
-**Disciplina:** Computação Gráfica  
-**Professor:** Pedro Ximenes  
