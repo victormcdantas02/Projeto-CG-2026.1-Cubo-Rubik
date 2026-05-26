@@ -25,11 +25,17 @@ Durante o desenvolvimento, a manipulação espacial em 3D gerou desafios técnic
 
 ## 4. Divisão de Tarefas
 Para otimizar o tempo e cobrir os requisitos, a equipe dividiu o escopo do projeto:
+* Pedro Ayres:
+Implementação da lógica principal do cubo, sistema de rotação e controles de teclado.
 
-* **Pedro Ayres:** Configuração da infraestrutura do WebGL (Cena, Renderizador, Câmera), iluminação do ambiente e integração do *OrbitControls*.
-* **Victor Dantas:** Desenvolvimento da classe `Cubo`, cálculo das malhas geométricas (primitivas e instanciamento) e mapeamento das coordenadas.
-* **João Carlos Pires:** Lógica matemática das matrizes de rotação (agrupamento com `Three.Group`, translações, tratamento de ponto flutuante) e mecânica do loop de animação.
-* **Roberto Campos:** Interface do Usuário (HTML/CSS), captura de eventos (*Event Listeners* de botões e teclado), funções de *Shuffle*/Reset, e documentação estrutural.
+* Victor Dantas:
+Estrutura HTML/CSS e interface gráfica do usuário.
+
+* João Carlos Pires:
+Implementação das animações e sistema de embaralhamento.
+
+* Roberto Campos:
+Documentação, testes e organização do projeto no GitHub.
 
 ## 5. Conclusão
 O desenvolvimento atendeu aos requisitos técnicos esperados. O uso prático do Three.js permitiu consolidar na prática os conceitos de álgebra linear e manipulação de matrizes no espaço 3D, além do entendimento sobre estrutura de cena (*Scene Graph*) e gestão de estados de animação vinculados à taxa de quadros (*requestAnimationFrame*).
