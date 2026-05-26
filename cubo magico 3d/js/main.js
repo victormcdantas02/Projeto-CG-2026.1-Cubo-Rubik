@@ -41,6 +41,10 @@ document.getElementById("btnReset").addEventListener("click", () => {
   cubo.reiniciar();
 });
 
+document.getElementById("themeSelect").addEventListener("change", (event) => {
+  cubo.alterarTema(event.target.value);
+});
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();

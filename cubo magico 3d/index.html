@@ -4,10 +4,17 @@
   <meta charset="UTF-8" />
   <title>Cubo Mágico 3D</title>
   <link rel="stylesheet" href="css/style.css" />
+  <label for="themeSelect">Tema:</label>
+  <select id="themeSelect">
+  <option value="classic">Clássico</option>
+  <option value="neon">Neon</option>
+  <option value="pastel">Pastel</option>
+</select>
 </head>
 <body>
   <div id="menu">
     <h1>Cubo Mágico 3D</h1>
+    <p id="status">Status: Cubo resolvido</p>
     <button id="btnU">Girar Face Superior</button>
     <button id="btnF">Girar Face Frontal</button>
     <button id="btnD">Girar Face Inferior</button>
